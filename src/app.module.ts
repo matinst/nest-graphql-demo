@@ -6,6 +6,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PetsModule } from './pets/pets.module';
+import { OwnerModule } from './owner/owner.module';
 
 @Module({
   imports: [
@@ -14,12 +15,17 @@ import { PetsModule } from './pets/pets.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gpl'),
     }),
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: ':memory:',
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'user',
+      password: 'password',
+      database: 'pet_db',
       entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: true
+      synchronize: true,
     }),
     PetsModule,
+    OwnerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
